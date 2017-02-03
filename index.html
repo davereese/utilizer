@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Utilizer | Fresh Consulting</title>
+    <link href="styles.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Utilizer</h1>
+      <div id="utilizer">
+        <div class="current-user" v-bind:class="{ active: name }">
+          <img v-bind:src="avatar" class="avatar"><button v-on:click="logOut($event)">Log out</button>
+        </div>
+        <div action="#" class="form" v-bind:class="{ active: form }">
+          <p class="error" v-bind:class="{ active: errorMessage }">{{errorMessage}}</p>
+          <p>Enter Harvest credentials</p>
+          <input type="text" v-model="username" placeholder="Username" @keyup.enter="fetchUser">
+          <input type="password" v-model="password" placeholder="Password" @keyup.enter="fetchUser">
+          <input type="submit" value="Log In" v-on:click="fetchUser">
+        </div>
+        <div class="projects" v-bind:class="{ active: items, loading: loading }">
+          <h2 v-if="items">{{title}}</h2>
+          <button v-on:click="fetchData('true')" v-if="items" v-bind:class="{ active: thisWeek }" class="last-week">Last Week</button>
+          <button v-on:click="fetchData()" v-if="items" v-bind:class="[ thisWeek ? '' : active ]" class="this-week">This Week</button>
+          <transition-group
+            appear
+            name="staggered-fade"
+            tag="div"
+            class="projects__container"
+            v-bind:css="false"
+            v-on:before-enter="beforeEnter"
+            v-on:enter="enter"
+            v-on:leave="leave"
+            >
+            <div class="projects__item"
+              v-for="(item, index) in items"
+              v-bind:class="{ billable: item.billable === 'true' }"
+              v-bind:key="item.name"
+              v-bind:data-index="index"
+              >
+              <h3>{{ item.name }}</h3>
+              <p>{{ item.task }}</p>
+              <div class="date"><span>{{ item.date | parseDate }}<br>{{ item.date | parseYear }}</span></div>
+              <div class="hours"><span>{{ item.hours }}</span></div>
+            </div>
+          </transition-group>
+          <h2 v-if="items" class="right totals utilization">Utilization Rate: <span>{{ utilization }}</span></h2>
+          <p v-if="items" class="right totals">Billable: <span>{{ billable }}</span></p>
+          <p v-if="items" class="right totals">Non-Billable: <span>{{ nonBillable }}</span></p>
+          <p v-if="items" class="right totals">Total: <span>{{ totalHours }}</span></p>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
+  <script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="js-cookie-master/src/js.cookie.js"></script>
+  <script src="js/app.js"></script>
+</html>
