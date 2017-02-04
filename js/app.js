@@ -50,7 +50,7 @@ new Vue({
       $.ajax({
         type: 'POST',
         dataType: 'json',
-        url: 'user-request.php',
+        url: 'php/user-request.php',
         data: sendData,
         success: function(data) {
           if ( 'Error' !== data['user'] ) {
@@ -89,7 +89,7 @@ new Vue({
       $.ajax({
         type: 'POST',
         dataType: 'json',
-        url: 'request.php',
+        url: 'php/request.php',
         data: sendData,
         success: function(data) {
           if ( 'Error' !== data['json'] ) {
