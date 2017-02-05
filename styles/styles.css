@@ -95,7 +95,7 @@ button {
   text-decoration: none;
   font-size: 14px;
   font-family: 'MuseoSans-100', sans-serif;
-  transition color 0.3s;
+  transition: color 0.3s;
 }
 
 a:hover,
